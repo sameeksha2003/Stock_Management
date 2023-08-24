@@ -10,3 +10,9 @@ argparse
 
 #Usage:
 python main.py --stock stock.csv
+
+Commands
+List Stock: Lists the available products and their details.
+Add Stock: Adds stock to existing products. Enter the filename containing stock data to be added.
+Save Stock: Saves the updated stock data to a CSV file.
+
