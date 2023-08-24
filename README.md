@@ -2,11 +2,11 @@
 
 This is a simple command line stock management system built using python. We can effectively manage the stock and update the CSV file.
 
-Prerequisites:
+#Prerequisites:
 Python3
 
-Packages used:
+#Packages used:
 argparse
 
-Usage
+#Usage:
 python main.py --stock stock.csv
