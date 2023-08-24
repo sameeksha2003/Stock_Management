@@ -3,7 +3,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description="Stock management")
 parser.add_argument("--stock", nargs="+",
-                    help="CSV files")
+                    help="CSV files",required=True)
 
 args = parser.parse_args()
 
