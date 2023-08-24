@@ -11,7 +11,7 @@ argparse
 #Usage:
 python main.py --stock stock.csv
 
-#Commands:
+##Commands:
 
 List Stock: Lists the available products and their details.
 
