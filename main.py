@@ -8,9 +8,9 @@ parser.add_argument("--customer", action="store_true",
                     help="Load customer interface")
 
 args = parser.parse_args()
+stock.load('stock.csv')
 
 if args.owner:
-    stock.load('stock.csv')
     while True:
         print("\nShopkeeper's Interface:")
         print("1. List Stock")
@@ -19,24 +19,23 @@ if args.owner:
         print("4. Exit")
 
         choice = input("Enter your choice: ")
-
-        if choice == "1":
-            stock.listStock()
-        elif choice == "2":
-            file_choice = input(
+        match choice:
+            case "1":
+                stock.listStock()
+            case "2":
+                file_choice = input(
                 "Enter the file from where you want to add stocks: ")
-            stock.add(file_choice)
-            print("Stock added")
-        elif choice == "3":
-            stock.save()
-            print("Stock saved")
-        elif choice == "4":
-            break
-        else:
-            print("Invalid choice")
+                stock.add(file_choice)
+                print("Stock added")
+            case "3":
+                stock.save()
+                print("Stock saved")
+            case "4":
+                break
+            case _:
+                print("Invalid choice")
 
 elif args.customer:
-    cart.load('stock.csv')
     while True:
         print("\nCustomer's Interface:")
         print("1. List Stock")
@@ -45,16 +44,20 @@ elif args.customer:
         print("4. Exit")
 
         choice = input("Enter your choice: ")
-        if choice == "1":
-            cart.list_products()
-        elif choice == "2":
-            item = input("Enter the product name: ")
-            quant = int(input("Enter the quantity: "))
-            cart.purchase(item, quant)
-        elif choice == "3":
-            cart.save_cart()
-            print("Cart saved")
-        elif choice == "4":
-            break
-        else:
-            print("Invalid choice")
+        match choice:
+            case "1":
+                cart.list_products()
+            case "2":
+                item = input("Enter the product name: ")
+                quant = int(input("Enter the quantity: "))
+                cart.purchase(item, quant)
+            case "3":
+                cart.save_cart()
+                print("Cart saved")
+            case "4":
+                break
+            case  _:
+                print("Invalid choice")
+
+else:
+    parser.print_help()
