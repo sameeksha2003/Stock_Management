@@ -59,6 +59,3 @@ elif args.customer:
                 break
             case  _:
                 print("Invalid choice")
-
-else:
-    parser.print_help()
