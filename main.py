@@ -9,7 +9,7 @@ group.add_argument("--customer", action="store_true",
                     help="Load customer interface")
 
 args = parser.parse_args()
-stock.load('c:\\Users\\samee\\OneDrive\\Desktop\\PYTHON\\stock.csv')
+stock.load('stock.csv')
 
 if args.owner:
     while True:
