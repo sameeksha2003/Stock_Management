@@ -1,4 +1,3 @@
-from csv_helper import write_csv
 import stock
 
 cart = []
@@ -11,11 +10,8 @@ def list_products():
 
 
 def purchase(item, quant):
-    found = None
-    for product in stock.stock_warehouse:
-        if product.pname == item:
-            found = product
-            break
+    found = next(filter(lambda n: n.pname == item,
+                 stock.stock_warehouse), None)
 
     if found:
         if found.stock >= quant:
@@ -29,8 +25,4 @@ def purchase(item, quant):
 
 
 def save_cart():
-    fieldnames = ["ProductID", "ProductName", "ProductPrice", "ProductStock"]
-    cart_data = []
-    cart_data = stock.stock_warehouse
-    write_csv('stock.csv',
-              cart_data, fieldnames)
+    stock.save()
