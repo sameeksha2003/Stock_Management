@@ -2,13 +2,14 @@ import argparse
 import cart
 import stock
 parser = argparse.ArgumentParser(description="Stock management")
-parser.add_argument("--owner", action="store_true",
+group=parser.add_mutually_exclusive_group(required=True)
+group.add_argument("--owner", action="store_true",
                     help="Load owner interface")
-parser.add_argument("--customer", action="store_true",
+group.add_argument("--customer", action="store_true",
                     help="Load customer interface")
 
 args = parser.parse_args()
-stock.load('stock.csv')
+stock.load('c:\\Users\\samee\\OneDrive\\Desktop\\PYTHON\\stock.csv')
 
 if args.owner:
     while True:
@@ -24,7 +25,7 @@ if args.owner:
                 stock.listStock()
             case "2":
                 file_choice = input(
-                "Enter the file from where you want to add stocks: ")
+                    "Enter the file from where you want to add stocks: ")
                 stock.add(file_choice)
                 print("Stock added")
             case "3":
