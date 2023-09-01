@@ -12,10 +12,9 @@ def load(filename):
         prod_price = float(product.price)
         prod_stock = int(product.stock)
 
-        product_instance = create_product_instance(
-            prod_id, prod_name, prod_price, prod_stock)
+        if product_instance := create_product_instance(
+                prod_id, prod_name, prod_price, prod_stock):
 
-        if product_instance:
             stock_warehouse.append(product_instance)
 
 
@@ -56,7 +55,25 @@ def add(file):
                   stock_pid[0].pid, "New stock:", stock_pid[0].stock)
 
 
+def remove(product_id, quant):
+    found = next(filter(lambda product: product.pid ==
+                 product_id, stock_warehouse), None)
+    if found:
+        choice = input("Enter your choice: ")
+        if found.stock >= quant:
+            if choice.lower() == 'reduce':
+                found.stock -= quant
+                print("Removed")
+            elif choice.lower() == 'remove':
+                stock_warehouse.remove(found)
+        else:
+            print("Not enough stock")
+    else:
+        print("Product not found")
+
+
 def save():
     fieldnames = ["ProductID", "ProductName", "ProductPrice", "ProductStock"]
     stock_data = stock_warehouse
-    write_csv('stock.csv', stock_data, fieldnames)
+    write_csv('stock.csv',
+              stock_data, fieldnames)
