@@ -1,5 +1,7 @@
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
 from csv_helper import read_csv, write_csv
+from logger import log
+
 
 stock_warehouse = []
 
@@ -34,6 +36,7 @@ def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
             return None
 
 
+@log
 def listStock():
     print("The available products in stock:")
     for prods in stock_warehouse:
@@ -41,6 +44,7 @@ def listStock():
             f"Product: {prods.pid}, Name: {prods.pname}, Price: {prods.price}, Stock: {prods.stock}")
 
 
+@log
 def add(file):
     new_stock = read_csv(file)
     for product in new_stock:
@@ -55,6 +59,7 @@ def add(file):
                   stock_pid[0].pid, "New stock:", stock_pid[0].stock)
 
 
+@log
 def remove(product_id, quant):
     found = next(filter(lambda product: product.pname.lower()
                  == product_id.lower(), stock_warehouse), None)
@@ -76,6 +81,7 @@ def remove(product_id, quant):
         print("Product not found")
 
 
+@log
 def save():
     fieldnames = ["ProductID", "ProductName", "ProductPrice", "ProductStock"]
     stock_data = stock_warehouse

@@ -1,13 +1,17 @@
 import stock
+from logger import log
+
 cart = []
 
 
+@log
 def list_products():
     print("Available products:")
     for product in stock.stock_warehouse:
         print(f"Product: {product.pname} at Price: {product.price}")
 
 
+@log
 def purchase(item, quant):
     found = next(filter(lambda n: n.pname == item,
                  stock.stock_warehouse))
@@ -22,6 +26,7 @@ def purchase(item, quant):
         print("Product not found:", item)
 
 
+@log
 def show_cart():
     total = 0
     for item in cart:
