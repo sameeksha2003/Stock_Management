@@ -1,23 +1,24 @@
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
-from csv_helper import read_csv, write_csv
+from sql_helper import read_sql, write_sql,insert_or_update
 from logger import log
-
+from csv_helper import read_csv
 
 stock_warehouse = []
 
 
 def load(filename):
-    stock_data = read_csv(filename)
+    stock_data = read_sql(filename)
     for product in stock_data:
-        prod_id = product.pid
-        prod_name = product.pname
-        prod_price = float(product.price)
-        prod_stock = int(product.stock)
+        prod_id = product[0]  
+        prod_name = product[1]  
+        prod_price = float(product[2])  
+        prod_stock = int(product[3])  
 
         if product_instance := create_product_instance(
                 prod_id, prod_name, prod_price, prod_stock):
 
             stock_warehouse.append(product_instance)
+
 
 
 def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
@@ -46,7 +47,7 @@ def listStock():
 
 @log
 def add(file):
-    new_stock = read_csv(file)
+    new_stock = read_csv(file)  
     for product in new_stock:
         product_id = product.pid
         stock = int(product.stock)
@@ -57,6 +58,9 @@ def add(file):
             stock_pid[0].stock += stock
             print("Stock added for:",
                   stock_pid[0].pid, "New stock:", stock_pid[0].stock)
+            insert_or_update(product_id, stock_pid[0].stock)
+        else:
+            print("Product not found")
 
 
 @log
@@ -83,7 +87,6 @@ def remove(product_id, quant):
 
 @log
 def save():
-    fieldnames = ["ProductID", "ProductName", "ProductPrice", "ProductStock"]
     stock_data = stock_warehouse
-    write_csv('stock.csv',
-              stock_data, fieldnames)
+    write_sql('stock.db',
+              stock_data)

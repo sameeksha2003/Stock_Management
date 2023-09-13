@@ -1,7 +1,6 @@
 import csv
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
 
-
 def read_csv(file_path):
     data = []
     with open(file_path, 'r', encoding="utf-8") as file:
@@ -12,10 +11,8 @@ def read_csv(file_path):
             prod_name = row[1]
             prod_price = float(row[2])
             prod_stock = int(row[3])
-            product_instance = create_product_instance(
-                prod_id, prod_name, prod_price, prod_stock)
-
-            if product_instance:
+            if product_instance := create_product_instance(
+                    prod_id, prod_name, prod_price, prod_stock):
                 data.append(product_instance)
     return data
 
@@ -34,16 +31,3 @@ def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
             return Sharpener(prod_id, prod_name, prod_price, prod_stock)
         case _:
             return None
-
-
-def write_csv(file_path, data, fieldnames):
-    with open(file_path, 'w', newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        for product in data:
-            writer.writerow({
-                "ProductID": product.pid,
-                "ProductName": product.pname,
-                "ProductPrice": product.price,
-                "ProductStock": product.stock
-            })
