@@ -1,6 +1,7 @@
 import argparse
 import cart
 import stock
+
 parser = argparse.ArgumentParser(description="Stock management")
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument("--owner", action="store_true",
@@ -9,7 +10,8 @@ group.add_argument("--customer", action="store_true",
                    help="Load customer interface")
 
 args = parser.parse_args()
-stock.load('stock.csv')
+stock.load('stock.db')
+
 
 if args.owner:
     while True:
@@ -25,9 +27,7 @@ if args.owner:
             case "1":
                 stock.listStock()
             case "2":
-                file_choice = input(
-                    "Enter the file from where you want to add stocks: ")
-                stock.add(file_choice)
+                stock.add()
             case "3":
                 item = input("Enter the product name: ")
                 quant = int(input("Enter the quantity: "))
@@ -62,4 +62,3 @@ elif args.customer:
                 break
             case  _:
                 print("Invalid choice")
-
