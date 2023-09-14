@@ -1,18 +1,17 @@
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
-from sql_helper import read_sql, write_sql, insert_or_update, initialize_database
+from sql_helper import read_sql, write_sql, insert_or_update,initialize_database
 from logger import log
 
 stock_warehouse = []
 
 
 def load(db_file):
-    initialize_database(db_file, 'stock.csv')
+
+    initialize_database(db_file)
+    
     stock_data = read_sql(db_file)
     for product in stock_data:
-        prod_id = product[0]
-        prod_name = product[1]
-        prod_price = float(product[2])
-        prod_stock = int(product[3])
+        prod_id, prod_name, prod_price, prod_stock = product
         if product_instance := create_product_instance(
             prod_id, prod_name, prod_price, prod_stock
         ):
