@@ -13,8 +13,11 @@ def list_products():
 
 @log
 def purchase(item, quant):
-    found = next(filter(lambda n: n.pname == item,
-                 stock.stock_warehouse))
+    if not stock.stock_warehouse:
+        print("Stock not available. Please try again later.")
+        return
+
+    found = next(filter(lambda n: n.pname == item, stock.stock_warehouse), None)
     if found:
         if found.stock >= quant:
             cart.append({"item": found, "Quantity": quant})
@@ -24,6 +27,7 @@ def purchase(item, quant):
             print("Not enough stock for", item)
     else:
         print("Product not found:", item)
+
 
 
 @log
