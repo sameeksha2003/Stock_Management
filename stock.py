@@ -60,6 +60,7 @@ def add():
         return
 
     insert_or_update('stock.db', csv_file)
+    save()  
 
 @log
 def remove(product_id, quant):
