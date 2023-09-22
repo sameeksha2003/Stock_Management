@@ -37,9 +37,9 @@ def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
 @log
 def listStock():
     print("The available products in stock:")
-    for prods in stock_warehouse:
-        print(
-            f"Product: {prods.pid}, Name: {prods.pname}, Price: {prods.price}, Stock: {prods.stock}")
+    stock_data = read_sql('stock.db')
+    for product in stock_data:
+        print(f"Product: {product[0]}, Name: {product[1]}, Price: {product[2]}, Stock: {product[3]}")
 
 @log
 def add():
@@ -60,7 +60,6 @@ def add():
         return
 
     insert_or_update('stock.db', csv_file)
-    save()  
 
 @log
 def remove(product_id, quant):
@@ -87,6 +86,7 @@ def remove(product_id, quant):
 @log
 def save():
     stock_data = stock_warehouse
+
     write_sql('stock.db',
               stock_data)
 
