@@ -9,7 +9,7 @@ db_params = {
     'port': '5432'
 }
 
-def initialize_database(db_params):
+def initialize_database():
     try:
         conn = psycopg2.connect(**db_params)
         conn.autocommit=True
@@ -27,23 +27,22 @@ def initialize_database(db_params):
     finally:
         conn.close()
 
-def insert_or_update(db_params, csv_file):
+def insert_or_update(csv_file):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
-        with open(csv_file, 'r',encoding='UTF-8') as file:
+        with open(csv_file, 'r', encoding='UTF-8') as file:
             csv_reader = csv.reader(file)
-            next(csv_reader) 
+            next(csv_reader)   
             for row in csv_reader:
                 product_id, product_name, product_price, new_stock = row
-
                 cursor.execute("SELECT * FROM stock WHERE ProductID=%s", (product_id,))
                 existing_product = cursor.fetchone()
 
                 if existing_product:
                     updated_stock = existing_product[3] + int(new_stock)
-                    cursor.execute("UPDATE stock SET ProductStock=? WHERE ProductID=%s",(updated_stock, product_id))
+                    cursor.execute("UPDATE stock SET ProductStock=%s WHERE ProductID=%s", (updated_stock, product_id))
                     conn.commit()
                 else:
                     cursor.execute("INSERT INTO stock (ProductID, ProductName, ProductPrice, ProductStock) VALUES (%s, %s, %s, %s)",
@@ -58,7 +57,7 @@ def insert_or_update(db_params, csv_file):
 
 
 
-def read_sql(db_params):
+def read_sql():
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM stock")
@@ -67,7 +66,8 @@ def read_sql(db_params):
     return data
 
 
-def write_sql(db_params, data):
+
+def write_sql(data):
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     try:

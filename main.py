@@ -1,7 +1,6 @@
 import argparse
 import cart
 import stock
-from postgresql import db_params
 
 parser = argparse.ArgumentParser(description="Stock management")
 group = parser.add_mutually_exclusive_group(required=True)
@@ -12,7 +11,7 @@ group.add_argument("--customer", action="store_true",
 
 args = parser.parse_args()
 
-stock.load(db_params)
+stock.load()
 
 if args.owner:
     while True:
@@ -26,15 +25,15 @@ if args.owner:
         choice = input("Enter your choice: ")
         match choice:
             case "1":
-                stock.listStock(db_params)
+                stock.listStock()
             case "2":
-                stock.add(db_params)
+                stock.add()
             case "3":
                 item = input("Enter the product name: ")
                 quant = int(input("Enter the quantity: "))
                 stock.remove(item, quant)
             case "4":
-                stock.save(db_params)
+                stock.save()
                 print("Stock saved")
             case "5":
                 break

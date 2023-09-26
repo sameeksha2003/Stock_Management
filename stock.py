@@ -1,15 +1,15 @@
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
-from postgresql import read_sql, write_sql, insert_or_update,initialize_database
+from postgresql import read_sql, write_sql, insert_or_update, initialize_database
 from logger import log
 
 stock_warehouse = []
 
 
-def load(db_params):
+def load():
 
-    initialize_database(db_params)
-    
-    stock_data = read_sql(db_params)
+    initialize_database()
+
+    stock_data = read_sql()
     for product in stock_data:
         prod_id, prod_name, prod_price, prod_stock = product
         if product_instance := create_product_instance(
@@ -35,14 +35,16 @@ def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
 
 
 @log
-def listStock(db_params):
+def listStock():
     print("The available products in stock:")
-    stock_data = read_sql(db_params)
+    stock_data = read_sql()
     for product in stock_data:
-        print(f"Product: {product[0]}, Name: {product[1]}, Price: {product[2]}, Stock: {product[3]}")
+        print(
+            f"Product: {product[0]}, Name: {product[1]}, Price: {product[2]}, Stock: {product[3]}")
+
 
 @log
-def add(db_params):
+def add():
     print("Choose the file from which you want to insert or update stock:")
     print("1. stock.csv")
     print("2. Another CSV file")
@@ -59,7 +61,8 @@ def add(db_params):
         print("Invalid choice")
         return
 
-    insert_or_update(db_params, csv_file)
+    insert_or_update(csv_file)
+
 
 @log
 def remove(product_id, quant):
@@ -84,9 +87,7 @@ def remove(product_id, quant):
 
 
 @log
-def save(db_params):
+def save():
     stock_data = stock_warehouse
 
-    write_sql(db_params,
-              stock_data)
-
+    write_sql(stock_data)
