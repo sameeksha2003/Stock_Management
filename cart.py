@@ -5,14 +5,14 @@ cart = []
 
 
 @log
-def list_products():
+def list_products()->None:
     print("Available products:")
     for product in stock.stock_warehouse:
         print(f"Product: {product.pname} at Price: {product.price}")
 
 
 @log
-def purchase(item, quant):
+def purchase(item: str, quant: int)->None:
     found = next(filter(lambda n: n.pname == item, stock.stock_warehouse), None)
     if found:
         if found.stock >= quant:
@@ -24,11 +24,9 @@ def purchase(item, quant):
     else:
         print("Product not found")
 
-
-
 @log
-def show_cart():
-    total = 0
+def show_cart()->None:
+    total=0.0
     for item in cart:
         product = item["item"]
         price = product.price

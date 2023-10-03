@@ -1,12 +1,12 @@
+from typing import List, Union, Optional
 from Model import Pen, Pencil, Eraser, Scale, Sharpener
 from postgresql import read_sql, write_sql, insert_or_update, initialize_database
 from logger import log
 
-stock_warehouse = []
+stock_warehouse: List[Union[Pen, Pencil, Eraser, Scale, Sharpener]]=[]
 
 
-def load():
-
+def load()->None:
     initialize_database()
 
     stock_data = read_sql()
@@ -18,7 +18,9 @@ def load():
             stock_warehouse.append(product_instance)
 
 
-def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
+def create_product_instance(
+    prod_id: str, prod_name: str, prod_price: float, prod_stock: int
+)-> Union[Pen, Pencil, Eraser, Scale, Sharpener]:
     match prod_id:
         case "P1":
             return Pen(prod_id, prod_name, prod_price, prod_stock)
@@ -35,7 +37,7 @@ def create_product_instance(prod_id, prod_name, prod_price, prod_stock):
 
 
 @log
-def listStock():
+def listStock()->None:
     print("The available products in stock:")
     stock_data = read_sql()
     for product in stock_data:
@@ -44,7 +46,7 @@ def listStock():
 
 
 @log
-def add():
+def add()->None:
     print("Choose the file from which you want to insert or update stock:")
     print("1. stock.csv")
     print("2. Another CSV file")
@@ -65,10 +67,8 @@ def add():
 
 
 @log
-def remove(product_id, quant):
-    found = next(filter(lambda product: product.pname.lower()
-                 == product_id.lower(), stock_warehouse), None)
-
+def remove(product_id: str, quant: int)->None:
+    found = next(filter(lambda product: product.pname.lower()== product_id.lower(), stock_warehouse), None)
     if found:
         if found.stock >= quant:
             choice = input("Enter your choice (reduce/remove): ").lower()
@@ -87,7 +87,7 @@ def remove(product_id, quant):
 
 
 @log
-def save():
+def save()->None:
     stock_data = stock_warehouse
 
     write_sql(stock_data)

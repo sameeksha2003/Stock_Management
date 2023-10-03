@@ -1,7 +1,8 @@
 import psycopg2
 import csv
+from typing import List, Tuple
 
-db_params = {
+db_params: dict = {
     'dbname': 'stock',
     'user': 'postgres',
     'password': 'postgres',
@@ -9,11 +10,11 @@ db_params = {
     'port': '5432'
 }
 
-def initialize_database():
+def initialize_database()->None:
     try:
         conn = psycopg2.connect(**db_params)
-        conn.autocommit=True
-        cursor=conn.cursor()
+        conn.autocommit = True
+        cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS public.stock (
                 ProductID TEXT PRIMARY KEY,
@@ -27,14 +28,14 @@ def initialize_database():
     finally:
         conn.close()
 
-def insert_or_update(csv_file):
+def insert_or_update(csv_file: str)->None:
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
     try:
         with open(csv_file, 'r', encoding='UTF-8') as file:
             csv_reader = csv.reader(file)
-            next(csv_reader)   
+            next(csv_reader)
             for row in csv_reader:
                 product_id, product_name, product_price, new_stock = row
                 cursor.execute("SELECT * FROM stock WHERE ProductID=%s", (product_id,))
@@ -55,9 +56,7 @@ def insert_or_update(csv_file):
     finally:
         conn.close()
 
-
-
-def read_sql():
+def read_sql()->List[Tuple]:
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM stock")
@@ -65,9 +64,7 @@ def read_sql():
     conn.close()
     return data
 
-
-
-def write_sql(data):
+def write_sql(data:List[Tuple])->None:
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
     try:
