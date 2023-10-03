@@ -1,6 +1,13 @@
-import psycopg2
+import sys
 import csv
 from typing import List, Tuple
+
+try:
+    import psycopg2
+except ImportError:
+    print("Error: The 'psycopg2' module is not installed")
+    print("Please install using 'pip install psycopg2' or activate using requirements.txt")
+    sys.exit(1)
 
 db_params: dict = {
     'dbname': 'stock',
@@ -26,7 +33,8 @@ def initialize_database()->None:
     except psycopg2.OperationalError as e:
         print(f"Error: {e}")
     finally:
-        conn.close()
+        if conn is not None:
+            conn.close()
 
 def insert_or_update(csv_file: str)->None:
     conn = psycopg2.connect(**db_params)
@@ -38,7 +46,8 @@ def insert_or_update(csv_file: str)->None:
             next(csv_reader)
             for row in csv_reader:
                 product_id, product_name, product_price, new_stock = row
-                cursor.execute("SELECT * FROM stock WHERE ProductID=%s", (product_id,))
+                cursor.execute(
+                    "SELECT * FROM stock WHERE ProductID=%s", (product_id,))
                 existing_product = cursor.fetchone()
 
                 if existing_product:
