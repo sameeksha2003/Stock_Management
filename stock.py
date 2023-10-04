@@ -1,9 +1,9 @@
 from Model import Pen, Pencil, Eraser, Scale, Sharpener, Product
 from postgresql import read_sql, write_sql, insert_or_update, initialize_database
 from logger import log
-from typing import List, Optional, Union
+from typing import List, Optional
 
-stock_warehouse: List[Union[Pen, Pencil, Eraser, Scale, Sharpener]] = []
+stock_warehouse: List[Product] = []
 
 def load() -> None:
     initialize_database()
