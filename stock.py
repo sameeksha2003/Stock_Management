@@ -1,4 +1,4 @@
-from Model import Pen, Pencil, Eraser, Scale, Sharpener
+from Model import Pen, Pencil, Eraser, Scale, Sharpener, Product
 from postgresql import read_sql, write_sql, insert_or_update, initialize_database
 from logger import log
 from typing import List, Optional, Union
@@ -15,7 +15,7 @@ def load() -> None:
         ):
             stock_warehouse.append(product_instance)
 
-def create_product_instance(prod_id: str, prod_name: str, prod_price: float, prod_stock: int) -> Optional[Union[Pen, Pencil, Eraser, Scale, Sharpener]]:
+def create_product_instance(prod_id: str, prod_name: str, prod_price: float, prod_stock: int) -> Optional[Product]:
     match prod_id:
         case "P1":
             return Pen(prod_id, prod_name, prod_price, prod_stock)
