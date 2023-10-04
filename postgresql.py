@@ -1,6 +1,13 @@
-import psycopg2
 import csv
+import sys
 from typing import List, Tuple
+
+try:
+    import psycopg2
+except ImportError:
+    print("Error: The 'psycopg2' module is not installed")
+    print("Please install using 'pip install psycopg2' or activate using requirements.txt")
+    sys.exit(1)
 
 db_params = {
     'dbname': 'postgres',
